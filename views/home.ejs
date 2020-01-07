@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+
+    <%- include ("partials/nav") %>
+
+    <h1> Mongo DB - CRUD </h1>
+
+    <form id="myForm" class="center">
+
+        <input type="text" name="item" class="l6">
+        <button type="submit" style="text-align: center;" class="waves-effect waves-light btn"> Add wishes </button>
+
+
+    </form>
+
+    <%  data.forEach((x)=>{             %>
+
+    <h2 style="text-align: center;"  onclick="delete1(this)"><%= x.wish %></h2>
+
+    <%  })        %>
+
+
+
+
+
+
+    <script>
+
+     function delete1(item){
+        
+        console.log(item)
+        let item2=item.innerHTML;
+        console.log(item2)
+        fetch("http://localhost:5000/remove/"+item2,
+        
+        {
+            method:"delete"
+
+        }).then(res=>res.json())
+        .then(res2=>{
+            console.log(res2)
+            location.reload();
+        })
+
+
+     }
+
+        document.getElementById("myForm").onsubmit = (event) => {
+
+            event.preventDefault();
+
+            const url = "http://localhost:5000/sent";
+
+            var data = new URLSearchParams();
+
+            console.log(data);
+
+            console.log(event.target);
+
+            for (const pair of new FormData(event.target)) {
+
+                data.append(pair[0], pair[1]);
+                console.log("pair 0 :" + pair[0])
+                console.log("pair 1 :" + pair[1])
+            }
+
+            console.log(data);
+
+            fetch(url, {
+
+                method: "post",
+                body: data,
+
+
+            }).then((res) => res.json())
+                .then((res2) => {
+                    
+                    
+                    console.log(res2)
+                    location.reload();
+                })
+
+        }
+    </script>
+
+</body>
+
+
+
+
+
+</html>
